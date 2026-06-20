@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shreshtha Caterers — Enter the Experience</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Georgia',serif}
+
+/* ─── CANVAS ─── */
+#c{position:fixed;inset:0;width:100%;height:100%}
+
+/* ─── CINEMATIC BARS ─── */
+.bar{position:fixed;left:0;right:0;height:80px;z-index:50;background:#000;transition:height 1.2s cubic-bezier(.77,0,.18,1)}
+#bar-top{top:0}
+#bar-bot{bottom:0}
+.bars-hidden #bar-top,
+.bars-hidden #bar-bot{height:0}
+
+/* ─── OVERLAY ─── */
+#overlay{
+  position:fixed;inset:0;z-index:40;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  pointer-events:none;
+}
+
+/* ─── PHASE: UNIVERSE ─── */
+#phase-universe{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  opacity:0;transition:opacity 0.8s ease;
+}
+#phase-universe.show{opacity:1}
+
+.universe-label{
+  font-size:clamp(.6rem,.9vw,.8rem);
+  letter-spacing:6px;text-transform:uppercase;
+  color:rgba(255,255,255,.35);margin-bottom:20px;
+}
+.universe-title{
+  font-size:clamp(2.5rem,6vw,5rem);
+  font-weight:900;color:#fff;
+  letter-spacing:-1px;line-height:1.05;
+  text-align:center;
+  text-shadow:0 0 60px rgba(120,80,255,.6),0 0 120px rgba(120,80,255,.3);
+}
+.universe-title span{
+  display:block;
+  background:linear-gradient(90deg,#a78bfa,#f9a8d4,#60a5fa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.universe-sub{
+  margin-top:18px;
+  font-size:clamp(.8rem,1.4vw,1rem);
+  color:rgba(255,255,255,.4);
+  letter-spacing:3px;text-transform:uppercase;
+}
+
+/* ─── PHASE: TRANSITION TEXT ─── */
+#phase-travel{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  opacity:0;transition:opacity 0.6s;
+}
+#phase-travel.show{opacity:1}
+.travel-line{
+  font-size:clamp(1.8rem,4vw,3.5rem);
+  font-weight:700;color:white;
+  text-align:center;line-height:1.2;
+  text-shadow:0 0 40px rgba(232,101,10,.8);
+}
+.travel-line em{
+  font-style:italic;
+  color:#FF8C42;
+}
+
+/* ─── PHASE: FOOD ─── */
+#phase-food{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  opacity:0;transition:opacity 0.8s;
+}
+#phase-food.show{opacity:1}
+.food-eyebrow{
+  font-size:.75rem;letter-spacing:5px;
+  text-transform:uppercase;
+  color:rgba(255,200,100,.7);margin-bottom:16px;
+}
+.food-title{
+  font-size:clamp(3rem,7vw,6rem);
+  font-weight:900;color:#fff;
+  text-align:center;line-height:1.05;
+  text-shadow:0 0 80px rgba(232,101,10,.7);
+}
+.food-title span{
+  display:block;
+  background:linear-gradient(90deg,#E8650A,#FF8C42,#D4A943,#FF8C42);
+  background-size:200% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:foodGrad 2s linear infinite;
+}
+@keyframes foodGrad{to{background-position:200% center}}
+.food-sub{
+  margin-top:16px;
+  font-size:clamp(.8rem,1.5vw,1.1rem);
+  color:rgba(255,255,255,.5);
+  letter-spacing:3px;text-transform:uppercase;
+}
+.food-tagline{
+  margin-top:10px;
+  font-style:italic;
+  font-size:clamp(.9rem,1.5vw,1.15rem);
+  color:rgba(255,200,100,.6);
+}
+
+/* ─── ENTER BUTTON ─── */
+#enter-btn{
+  position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
+  z-index:60;
+  background:transparent;border:1.5px solid rgba(255,255,255,.3);
+  color:rgba(255,255,255,.7);
+  font-size:.8rem;letter-spacing:4px;text-transform:uppercase;
+  padding:14px 40px;border-radius:50px;
+  cursor:pointer;
+  transition:all .3s;
+  font-family:'Georgia',serif;
+  opacity:0;pointer-events:none;
+}
+#enter-btn.show{opacity:1;pointer-events:all}
+#enter-btn:hover{
+  background:rgba(232,101,10,.2);
+  border-color:rgba(232,101,10,.8);
+  color:#FF8C42;
+  box-shadow:0 0 30px rgba(232,101,10,.4);
+}
+
+/* ─── LOADING BAR ─── */
+#loader{
+  position:fixed;bottom:60px;left:50%;transform:translateX(-50%);
+  z-index:60;width:200px;text-align:center;
+}
+#loader-bar{
+  width:100%;height:1px;background:rgba(255,255,255,.1);
+  border-radius:1px;overflow:hidden;margin-bottom:10px;
+}
+#loader-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,#7c3aed,#E8650A);
+  transition:width .3s ease;
+}
+#loader-text{
+  font-size:.65rem;letter-spacing:3px;
+  color:rgba(255,255,255,.25);text-transform:uppercase;
+}
+
+/* ─── FLASH WIPE ─── */
+#wipe{
+  position:fixed;inset:0;z-index:200;
+  background:#fff;opacity:0;pointer-events:none;
+  transition:opacity .4s ease;
+}
+#wipe.flash{opacity:1}
+
+/* ─── VIGNETTE ─── */
+#vignette{
+  position:fixed;inset:0;z-index:30;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,.85) 100%);
+}
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+<div id="vignette"></div>
+
+<div id="bar-top" class="bar"></div>
+<div id="bar-bot" class="bar"></div>
+
+<div id="overlay">
+  <div id="phase-universe">
+    <div class="universe-label">You are somewhere in the cosmos</div>
+    <h1 class="universe-title">400 Billion<span>Stars</span></h1>
+    <div class="universe-sub">& one perfect celebration</div>
+  </div>
+  <div id="phase-travel">
+    <div class="travel-line">Travelling across<br/><em>space & time</em><br/>to find you</div>
+  </div>
+  <div id="phase-food">
+    <div class="food-eyebrow">✦ Udaipur, Rajasthan, India ✦</div>
+    <h1 class="food-title">Shreshtha<span>Caterers</span></h1>
+    <div class="food-sub">Premium Catering Since 2009</div>
+    <div class="food-tagline">"Where every meal tells a story"</div>
+  </div>
+</div>
+
+<div id="loader">
+  <div id="loader-bar"><div id="loader-fill"></div></div>
+  <div id="loader-text">Loading the experience</div>
+</div>
+
+<button id="enter-btn" onclick="enterSite()">Enter the Experience →</button>
+<div id="wipe"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ══════════════════════════════════════════════
+//  THREE.JS SCENE
+// ══════════════════════════════════════════════
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.setClearColor(0x000005,1);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60,innerWidth/innerHeight,0.1,2000);
+camera.position.set(0,0,50);
+
+// ── FOG ──
+scene.fog = new THREE.FogExp2(0x000005, 0.0018);
+
+// ── GALAXY PARTICLES ──
+function makeGalaxy(count, spread, color1, color2, size){
+  const geo = new THREE.BufferGeometry();
+  const pos = new Float32Array(count*3);
+  const cols = new Float32Array(count*3);
+  const c1=new THREE.Color(color1), c2=new THREE.Color(color2);
+  for(let i=0;i<count;i++){
+    const r = Math.pow(Math.random(),1.5)*spread;
+    const theta = Math.random()*Math.PI*2;
+    const phi = (Math.random()-0.5)*0.4;
+    const arm = Math.floor(Math.random()*3)*(Math.PI*2/3);
+    const spin = r*0.5;
+    pos[i*3]   = Math.cos(theta+arm+spin)*r;
+    pos[i*3+1] = Math.sin(phi)*r*0.25;
+    pos[i*3+2] = Math.sin(theta+arm+spin)*r;
+    const mix = r/spread;
+    const c = c1.clone().lerp(c2, mix);
+    cols[i*3]=c.r; cols[i*3+1]=c.g; cols[i*3+2]=c.b;
+  }
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  geo.setAttribute('color',new THREE.BufferAttribute(cols,3));
+  const mat = new THREE.PointsMaterial({
+    size, vertexColors:true,
+    transparent:true,opacity:0.85,
+    sizeAttenuation:true,
+  });
+  return new THREE.Points(geo,mat);
+}
+
+const galaxy1 = makeGalaxy(18000, 120, '#7c3aed','#60a5fa', 0.25);
+const galaxy2 = makeGalaxy(8000,  80,  '#f472b6','#a78bfa', 0.18);
+const galaxy3 = makeGalaxy(5000,  40,  '#E8650A','#D4A943', 0.22);
+galaxy1.rotation.x = 0.3;
+galaxy2.rotation.x = -0.4; galaxy2.position.set(60,-20,-80);
+galaxy3.rotation.x = 0.5;  galaxy3.position.set(-40,10,-60);
+scene.add(galaxy1,galaxy2,galaxy3);
+
+// ── NEBULA CLOUDS (large transparent spheres) ──
+function makeNebula(x,y,z,r,col,op){
+  const g = new THREE.SphereGeometry(r,32,32);
+  const m = new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:op,side:THREE.BackSide});
+  const mesh = new THREE.Mesh(g,m);
+  mesh.position.set(x,y,z);
+  return mesh;
+}
+scene.add(
+  makeNebula(0,0,-30,60,0x4c1d95,0.08),
+  makeNebula(30,10,-60,40,0x7c3aed,0.06),
+  makeNebula(-20,-5,-40,35,0xe53935,0.05),
+  makeNebula(10,20,-80,50,0x1d4ed8,0.07),
+  makeNebula(-10,-15,-50,45,0xD4A943,0.04)
+);
+
+// ── FLOATING FOOD SHAPES (become visible in phase 2) ──
+const foodGroup = new THREE.Group();
+const fGeos = [
+  new THREE.SphereGeometry(1.2,16,16),
+  new THREE.TorusGeometry(1,0.4,12,48),
+  new THREE.OctahedronGeometry(1.2,0),
+  new THREE.ConeGeometry(0.8,2,8),
+  new THREE.TorusKnotGeometry(0.8,0.3,80,16),
+];
+const fColors = [0xE8650A,0xFF8C42,0xD4A943,0xF0C96A,0xB84E06];
+const foodMeshes=[];
+for(let i=0;i<20;i++){
+  const g=fGeos[i%fGeos.length];
+  const m=new THREE.MeshPhongMaterial({
+    color:fColors[i%fColors.length],
+    transparent:true,opacity:0,
+    emissive:fColors[i%fColors.length],emissiveIntensity:0.3,
+    wireframe: i%3===0,
+  });
+  const mesh=new THREE.Mesh(g,m);
+  mesh.position.set((Math.random()-0.5)*40,(Math.random()-0.5)*20,(Math.random()-0.5)*20-5);
+  mesh.rotation.set(Math.random()*Math.PI,Math.random()*Math.PI,0);
+  mesh.userData={
+    rx:(Math.random()-.5)*.012,
+    ry:(Math.random()-.5)*.01,
+    floatPhase:Math.random()*Math.PI*2,
+    baseY:mesh.position.y,
+  };
+  foodGroup.add(mesh);
+  foodMeshes.push(mesh);
+}
+scene.add(foodGroup);
+
+// ── SHOOTING STARS ──
+const shootGroup = new THREE.Group();
+scene.add(shootGroup);
+function spawnShooter(){
+  const g=new THREE.BufferGeometry();
+  const len=8+Math.random()*12;
+  const verts=new Float32Array([0,0,0, -len,( Math.random()-.5)*2,(Math.random()-.5)*2]);
+  g.setAttribute('position',new THREE.BufferAttribute(verts,3));
+  const m=new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:.8});
+  const line=new THREE.Line(g,m);
+  const sx=(Math.random()-.5)*200, sy=(Math.random()-.5)*100, sz=-Math.random()*100-20;
+  line.position.set(sx,sy,sz);
+  const dx=(Math.random()-.5)*.8, dy=-(Math.random()*.4+.1), dz=0;
+  line.userData={dx,dy,dz,life:0,maxLife:60+Math.random()*40,mat:m};
+  shootGroup.add(line);
+  return line;
+}
+const shooters=[];
+for(let i=0;i<6;i++) shooters.push(spawnShooter());
+
+// ── LIGHTING ──
+scene.add(new THREE.AmbientLight(0xffffff,0.4));
+const pl1=new THREE.PointLight(0xE8650A,3,100); pl1.position.set(10,10,20); scene.add(pl1);
+const pl2=new THREE.PointLight(0x7c3aed,2,80); pl2.position.set(-15,5,10); scene.add(pl2);
+const pl3=new THREE.PointLight(0xD4A943,2,60); pl3.position.set(0,-10,15); scene.add(pl3);
+
+// ──────────────────────────────────────────────
+//  ANIMATION STATE
+// ──────────────────────────────────────────────
+let phase=0;          // 0=universe 1=travel 2=food
+let phaseTime=0;
+let camZ=50, camTargetZ=50;
+let foodOpacity=0;
+let mouseX=0,mouseY=0;
+let globalTime=0;
+let loadPct=0;
+
+document.addEventListener('mousemove',e=>{
+  mouseX=(e.clientX/innerWidth-.5)*2;
+  mouseY=(e.clientY/innerHeight-.5)*2;
+});
+window.addEventListener('resize',()=>{
+  renderer.setSize(innerWidth,innerHeight);
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+});
+
+// ── DOM refs ──
+const phaseUni=document.getElementById('phase-universe');
+const phaseTrv=document.getElementById('phase-travel');
+const phaseFod=document.getElementById('phase-food');
+const enterBtn=document.getElementById('enter-btn');
+const loaderFill=document.getElementById('loader-fill');
+const loaderText=document.getElementById('loader-text');
+const loader=document.getElementById('loader');
+const barTop=document.getElementById('bar-top');
+const barBot=document.getElementById('bar-bot');
+
+// ── PHASE TIMELINE (ms) ──
+const T={
+  bars:   400,
+  uni:    1200,
+  uniOut: 3800,
+  travel: 4200,
+  travOut: 6200,
+  food:   6600,
+  btn:    8200,
+};
+
+let start=null;
+function tick(ts){
+  if(!start) start=ts;
+  const elapsed=ts-start;
+  globalTime=elapsed*.001;
+  phaseTime=elapsed;
+
+  // ── LOADER ──
+  if(loadPct<100){
+    loadPct=Math.min(100,elapsed/80);
+    loaderFill.style.width=loadPct+'%';
+    if(loadPct>=100) loader.style.opacity='0';
+  }
+
+  // ── CINEMATIC BARS ──
+  if(elapsed>T.bars) document.body.classList.add('bars-hidden');
+
+  // ── PHASE TRANSITIONS ──
+  if(elapsed>T.uni && elapsed<T.uniOut) phaseUni.classList.add('show');
+  else phaseUni.classList.remove('show');
+
+  if(elapsed>T.travel && elapsed<T.travOut) phaseTrv.classList.add('show');
+  else phaseTrv.classList.remove('show');
+
+  if(elapsed>T.food){ phaseFod.classList.add('show'); }
+
+  if(elapsed>T.btn){ enterBtn.classList.add('show'); }
+
+  // ── CAMERA JOURNEY ──
+  // Phase 0: Floating in galaxy (z=50)
+  // Phase 1: Rush forward fast (zoom in)
+  // Phase 2: Slow settle
+  if(elapsed<3000){
+    camTargetZ = 50;
+  } else if(elapsed<5500){
+    const p=(elapsed-3000)/2500;
+    camTargetZ = 50 - easeInOut(p)*55; // rush from 50 → -5
+  } else {
+    const p=Math.min(1,(elapsed-5500)/2000);
+    camTargetZ = -5 + easeInOut(p)*10; // gentle settle
+  }
+  camZ += (camTargetZ-camZ)*0.03;
+  camera.position.z=camZ;
+  camera.position.x += (mouseX*4 - camera.position.x)*0.025;
+  camera.position.y += (-mouseY*2 - camera.position.y)*0.025;
+  camera.lookAt(0,0,-10);
+
+  // ── GALAXY ROTATION ──
+  galaxy1.rotation.y = globalTime*0.04;
+  galaxy2.rotation.y = -globalTime*0.03;
+  galaxy3.rotation.y = globalTime*0.05;
+
+  // ── NEBULA PULSE ──
+  scene.children.forEach(ch=>{
+    if(ch.isMesh && ch.geometry.type==='SphereGeometry'){
+      ch.material.opacity = (Math.sin(globalTime*0.5+ch.position.x)*0.015)+0.06;
+    }
+  });
+
+  // ── FOOD SHAPES appear in phase 2 ──
+  if(elapsed>5000){
+    foodOpacity=Math.min(1,(elapsed-5000)/2000)*0.7;
+  }
+  foodMeshes.forEach((m,i)=>{
+    m.material.opacity=foodOpacity;
+    m.rotation.x+=m.userData.rx;
+    m.rotation.y+=m.userData.ry;
+    m.userData.floatPhase+=0.008;
+    m.position.y=m.userData.baseY+Math.sin(m.userData.floatPhase)*0.8;
+  });
+  foodGroup.rotation.y=globalTime*0.05;
+
+  // ── POINT LIGHTS animate ──
+  pl1.position.x=Math.sin(globalTime*.4)*20;
+  pl1.position.y=Math.cos(globalTime*.3)*10;
+  pl2.position.x=Math.cos(globalTime*.35)*15;
+  pl2.position.z=Math.sin(globalTime*.25)*10+10;
+  pl3.position.x=Math.sin(globalTime*.28)*12;
+  pl3.position.y=Math.cos(globalTime*.5)*8;
+
+  // ── SHOOTING STARS ──
+  shooters.forEach((s,i)=>{
+    if(!s.parent) return;
+    s.userData.life++;
+    s.position.x+=s.userData.dx*3;
+    s.position.y+=s.userData.dy*2;
+    const lifeRatio=s.userData.life/s.userData.maxLife;
+    s.userData.mat.opacity=Math.sin(lifeRatio*Math.PI)*0.8;
+    if(s.userData.life>=s.userData.maxLife){
+      shootGroup.remove(s);
+      shooters[i]=spawnShooter();
+      shootGroup.add(shooters[i]);
+    }
+  });
+
+  renderer.render(scene,camera);
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+function easeInOut(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
+
+// ── ENTER SITE ──
+function enterSite(){
+  const wipe=document.getElementById('wipe');
+  wipe.style.transition='opacity .6s ease';
+  wipe.classList.add('flash');
+  setTimeout(()=>{
+    window.location.href='index.html';
+  },600);
+}
+</script>
+</body>
+</html>
