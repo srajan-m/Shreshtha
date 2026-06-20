@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shreshtha Caterers — Premium Catering in Udaipur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root {
+  --saffron: #E8650A;
+  --saffron-light: #FF8C42;
+  --saffron-dark: #B84E06;
+  --gold: #D4A943;
+  --gold-light: #F0C96A;
+  --cream: #FDF6EC;
+  --deep: #1A0F00;
+  --deep2: #2C1A06;
+  --text: #3D2400;
+  --text-light: #7A5C3A;
+  --white: #FFFFFF;
+  --section-pad: 100px 0;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  overflow-x: hidden;
+}
+/* ---- SCROLLBAR ---- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--deep); }
+::-webkit-scrollbar-thumb { background: var(--saffron); border-radius: 3px; }
+
+/* ---- NAV ---- */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 18px 5%;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: all 0.4s ease;
+}
+nav.scrolled {
+  background: rgba(26,15,0,0.97);
+  backdrop-filter: blur(20px);
+  padding: 12px 5%;
+  box-shadow: 0 2px 40px rgba(232,101,10,0.15);
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--white);
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+.nav-logo span { color: var(--saffron); }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--saffron-light); }
+.nav-cta {
+  background: var(--saffron);
+  color: white !important;
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-weight: 500 !important;
+  transition: background 0.3s, transform 0.2s !important;
+}
+.nav-cta:hover { background: var(--saffron-light) !important; transform: translateY(-1px); }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+.hamburger span { width: 24px; height: 2px; background: white; border-radius: 2px; transition: 0.3s; }
+.mobile-menu {
+  display: none; position: fixed; inset: 0; background: var(--deep);
+  z-index: 999; flex-direction: column; align-items: center;
+  justify-content: center; gap: 32px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  color: white; text-decoration: none; font-size: 1.4rem;
+  font-family: 'Playfair Display', serif; font-weight: 700;
+  transition: color 0.3s;
+}
+.mobile-menu a:hover { color: var(--saffron); }
+.mobile-close {
+  position: absolute; top: 24px; right: 24px;
+  background: none; border: none; color: white;
+  font-size: 1.5rem; cursor: pointer;
+}
+
+/* ---- HERO ---- */
+#hero {
+  position: relative; height: 100vh; min-height: 650px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+#hero-canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(26,15,0,0.88) 0%, rgba(44,26,6,0.7) 50%, rgba(26,15,0,0.85) 100%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  text-align: center; padding: 0 20px;
+  max-width: 860px;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(232,101,10,0.15);
+  border: 1px solid rgba(232,101,10,0.4);
+  border-radius: 50px;
+  padding: 6px 20px;
+  color: var(--saffron-light);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: '✦'; font-size: 0.6rem; color: var(--gold);
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 900;
+  color: white;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.hero-title .accent { color: var(--saffron); display: block; font-style: italic; }
+.hero-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-style: italic;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+.hero-stats {
+  display: flex; justify-content: center; gap: 50px;
+  margin-bottom: 44px;
+}
+.hero-stat h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem; font-weight: 900;
+  color: var(--saffron-light);
+}
+.hero-stat p {
+  font-size: 0.75rem; font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 1.5px; text-transform: uppercase;
+}
+.hero-divider { width: 1px; background: rgba(255,255,255,0.15); }
+.hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--saffron);
+  color: white; border: none;
+  padding: 16px 40px;
+  border-radius: 50px;
+  font-size: 0.95rem; font-weight: 500;
+  cursor: pointer; text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s;
+  box-shadow: 0 8px 30px rgba(232,101,10,0.4);
+}
+.btn-primary:hover {
+  background: var(--saffron-light);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(232,101,10,0.5);
+}
+.btn-outline {
+  background: transparent;
+  color: white; border: 1.5px solid rgba(255,255,255,0.4);
+  padding: 15px 40px;
+  border-radius: 50px;
+  font-size: 0.95rem; font-weight: 500;
+  cursor: pointer; text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s;
+}
+.btn-outline:hover {
+  border-color: var(--saffron);
+  color: var(--saffron);
+  transform: translateY(-3px);
+}
+.scroll-indicator {
+  position: absolute; bottom: 32px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: rgba(255,255,255,0.4); font-size: 0.7rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  animation: bounce 2s ease-in-out infinite;
+}
+.scroll-indicator::after {
+  content: ''; width: 1px; height: 50px;
+  background: linear-gradient(to bottom, rgba(232,101,10,0.8), transparent);
+}
+@keyframes bounce {
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(8px)}
+}
+
+/* ---- SECTION BASE ---- */
+section { padding: var(--section-pad); }
+.section-eyebrow {
+  display: inline-block;
+  color: var(--saffron);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  color: var(--deep);
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.section-title em { color: var(--saffron); font-style: italic; }
+.section-sub {
+  font-size: 1rem;
+  color: var(--text-light);
+  line-height: 1.8;
+  max-width: 540px;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+.text-center { text-align: center; }
+.text-center .section-sub { margin: 0 auto; }
+
+/* ---- ABOUT ---- */
+#about { background: white; }
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.about-img-wrap {
+  position: relative;
+}
+.about-img-frame {
+  width: 100%; aspect-ratio: 4/5;
+  background: linear-gradient(135deg, var(--deep) 0%, var(--deep2) 100%);
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+}
+.about-img-frame img {
+  width: 100%; height: 100%; object-fit: cover;
+  opacity: 0.85;
+}
+.about-img-frame .img-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 12px;
+  color: rgba(255,255,255,0.3);
+  font-size: 4rem;
+}
+.about-img-frame .img-placeholder p {
+  font-size: 0.8rem; letter-spacing: 2px;
+  text-transform: uppercase; color: rgba(255,255,255,0.25);
+}
+.about-badge {
+  position: absolute;
+  bottom: -20px; right: -20px;
+  width: 110px; height: 110px;
+  background: var(--saffron);
+  border-radius: 50%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  box-shadow: 0 12px 40px rgba(232,101,10,0.4);
+  border: 4px solid white;
+}
+.about-badge h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; font-weight: 900; color: white; line-height: 1;
+}
+.about-badge p { font-size: 0.6rem; color: rgba(255,255,255,0.85); letter-spacing: 1px; text-transform: uppercase; text-align: center; }
+.about-features { margin-top: 36px; display: flex; flex-direction: column; gap: 20px; }
+.about-feat {
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.feat-icon {
+  width: 46px; height: 46px; min-width: 46px;
+  background: linear-gradient(135deg, var(--saffron), var(--saffron-light));
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 1.1rem;
+  box-shadow: 0 6px 20px rgba(232,101,10,0.3);
+}
+.feat-text h4 { font-size: 1rem; font-weight: 500; color: var(--deep); margin-bottom: 3px; }
+.feat-text p { font-size: 0.875rem; color: var(--text-light); line-height: 1.6; }
+
+/* ---- SERVICES ---- */
+#services { background: var(--cream); }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px; margin-top: 56px;
+}
+.service-card {
+  background: white;
+  border-radius: 20px;
+  padding: 36px 28px;
+  position: relative; overflow: hidden;
+  transition: all 0.4s ease;
+  border: 1px solid rgba(0,0,0,0.05);
+  cursor: default;
+}
+.service-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--saffron), var(--saffron-dark));
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.service-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(232,101,10,0.2); }
+.service-card:hover::before { opacity: 1; }
+.service-card:hover .service-icon,
+.service-card:hover .service-title,
+.service-card:hover .service-desc,
+.service-card:hover .service-num { color: white; }
+.service-card:hover .service-icon-wrap { background: rgba(255,255,255,0.15); }
+.service-num {
+  position: absolute; top: 24px; right: 28px;
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem; font-weight: 900;
+  color: rgba(0,0,0,0.04);
+  line-height: 1;
+  transition: color 0.4s;
+}
+.service-card:hover .service-num { color: rgba(255,255,255,0.08); }
+.service-icon-wrap {
+  width: 60px; height: 60px;
+  background: linear-gradient(135deg, rgba(232,101,10,0.1), rgba(232,101,10,0.05));
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px;
+  transition: background 0.4s;
+}
+.service-icon { font-size: 1.6rem; color: var(--saffron); transition: color 0.4s; }
+.service-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem; font-weight: 700;
+  color: var(--deep); margin-bottom: 12px;
+  position: relative; z-index: 1;
+  transition: color 0.4s;
+}
+.service-desc {
+  font-size: 0.875rem; color: var(--text-light);
+  line-height: 1.7; position: relative; z-index: 1;
+  transition: color 0.4s;
+}
+
+/* ---- MENU ---- */
+#menu { background: var(--deep); }
+#menu .section-title { color: white; }
+#menu .section-eyebrow { color: var(--gold); }
+#menu .section-sub { color: rgba(255,255,255,0.5); }
+.menu-tabs {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin: 40px 0 36px;
+}
+.menu-tab {
+  padding: 10px 24px;
+  border-radius: 50px;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'DM Sans', sans-serif;
+}
+.menu-tab.active, .menu-tab:hover {
+  background: var(--saffron);
+  border-color: var(--saffron);
+  color: white;
+}
+.menu-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.menu-item {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex; gap: 16px; align-items: flex-start;
+  transition: all 0.3s;
+}
+.menu-item:hover {
+  background: rgba(232,101,10,0.1);
+  border-color: rgba(232,101,10,0.3);
+  transform: translateY(-4px);
+}
+.menu-emoji { font-size: 2rem; flex-shrink: 0; }
+.menu-info h4 {
+  font-size: 0.95rem; font-weight: 500; color: white;
+  margin-bottom: 4px;
+}
+.menu-info p { font-size: 0.8rem; color: rgba(255,255,255,0.4); line-height: 1.5; }
+
+/* ---- GALLERY ---- */
+#gallery { background: white; }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 200px);
+  gap: 12px; margin-top: 48px;
+}
+.gallery-item {
+  border-radius: 16px; overflow: hidden;
+  background: linear-gradient(135deg, var(--deep), var(--deep2));
+  position: relative; cursor: pointer;
+  transition: transform 0.4s;
+}
+.gallery-item:hover { transform: scale(1.02); }
+.gallery-item:nth-child(1) { grid-column: span 2; }
+.gallery-item:nth-child(4) { grid-column: span 2; }
+.gallery-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px;
+}
+.gallery-placeholder .gi { font-size: 2.5rem; opacity: 0.4; }
+.gallery-placeholder p {
+  font-size: 0.7rem; color: rgba(255,255,255,0.2);
+  letter-spacing: 2px; text-transform: uppercase;
+}
+.gallery-item img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.4s;
+}
+.gallery-item:hover img { transform: scale(1.05); }
+.gallery-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,15,0,0.7), transparent);
+  opacity: 0; transition: opacity 0.3s;
+  display: flex; align-items: flex-end; padding: 16px;
+}
+.gallery-item:hover .gallery-overlay { opacity: 1; }
+.gallery-overlay span {
+  color: white; font-size: 0.8rem; font-weight: 500;
+  letter-spacing: 1px;
+}
+
+/* ---- TESTIMONIALS ---- */
+#testimonials { background: var(--cream); }
+.testi-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; margin-top: 56px;
+}
+.testi-card {
+  background: white;
+  border-radius: 20px;
+  padding: 32px 28px;
+  position: relative;
+  border: 1px solid rgba(0,0,0,0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.testi-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+}
+.testi-quote {
+  font-size: 3rem;
+  font-family: 'Playfair Display', serif;
+  color: var(--saffron);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.testi-text {
+  font-size: 0.9rem; color: var(--text-light);
+  line-height: 1.8; margin-bottom: 24px;
+  font-style: italic;
+}
+.testi-stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 16px; }
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--saffron), var(--saffron-dark));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700; font-size: 1.1rem; color: white;
+}
+.testi-author h5 { font-size: 0.9rem; font-weight: 500; color: var(--deep); }
+.testi-author p { font-size: 0.75rem; color: var(--text-light); }
+
+/* ---- BOOKING ---- */
+#booking { background: linear-gradient(135deg, var(--deep) 0%, var(--deep2) 100%); }
+#booking .section-title { color: white; }
+#booking .section-eyebrow { color: var(--gold); }
+#booking .section-sub { color: rgba(255,255,255,0.5); }
+.booking-grid {
+  display: grid; grid-template-columns: 1fr 1.4fr;
+  gap: 80px; align-items: start; margin-top: 60px;
+}
+.booking-info h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem; color: white; margin-bottom: 24px;
+}
+.booking-contact-item {
+  display: flex; gap: 14px; margin-bottom: 20px; align-items: flex-start;
+}
+.bci-icon {
+  width: 42px; height: 42px; min-width: 42px;
+  background: rgba(232,101,10,0.15);
+  border: 1px solid rgba(232,101,10,0.3);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--saffron-light); font-size: 1rem;
+}
+.bci-text h5 { font-size: 0.8rem; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+.bci-text p { font-size: 0.95rem; color: white; font-weight: 400; }
+.booking-form-wrap {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  padding: 40px;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { margin-bottom: 16px; }
+.form-group label {
+  display: block;
+  font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 8px;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: white;
+  font-size: 0.9rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.3s;
+  -webkit-appearance: none;
+}
+.form-group select option { background: var(--deep2); color: white; }
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--saffron);
+  background: rgba(232,101,10,0.05);
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: rgba(255,255,255,0.25); }
+.form-group textarea { resize: vertical; min-height: 100px; }
+.form-submit {
+  width: 100%;
+  background: var(--saffron);
+  color: white; border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 1rem; font-weight: 500;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.3s;
+  margin-top: 8px;
+  box-shadow: 0 8px 30px rgba(232,101,10,0.35);
+}
+.form-submit:hover {
+  background: var(--saffron-light);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(232,101,10,0.45);
+}
+#form-success {
+  display: none;
+  text-align: center; padding: 32px;
+  color: white;
+}
+#form-success i { font-size: 3rem; color: #4ade80; margin-bottom: 16px; display: block; }
+#form-success h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 8px; }
+#form-success p { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
+
+/* ---- TEAM ---- */
+#team { background: white; }
+.team-grid {
+  display: flex; justify-content: center;
+  margin-top: 56px;
+}
+.team-card {
+  background: var(--cream);
+  border-radius: 24px; overflow: hidden;
+  max-width: 320px; width: 100%;
+  text-align: center;
+  border: 1px solid rgba(0,0,0,0.06);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.team-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.1);
+}
+.team-img {
+  width: 100%; aspect-ratio: 1;
+  background: linear-gradient(135deg, var(--deep), var(--saffron-dark));
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.team-img img { width: 100%; height: 100%; object-fit: cover; }
+.team-img .ti-placeholder {
+  font-size: 5rem;
+  color: rgba(255,255,255,0.2);
+}
+.team-info { padding: 28px; }
+.team-info h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; font-weight: 700;
+  color: var(--deep); margin-bottom: 4px;
+}
+.team-info .role {
+  font-size: 0.8rem; color: var(--saffron);
+  font-weight: 500; letter-spacing: 1.5px;
+  text-transform: uppercase; margin-bottom: 16px;
+}
+.team-info p { font-size: 0.875rem; color: var(--text-light); line-height: 1.7; }
+.team-socials { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+.team-social {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid rgba(0,0,0,0.08);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-light); font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+.team-social:hover { background: var(--saffron); color: white; border-color: var(--saffron); }
+
+/* ---- CONTACT ---- */
+#contact { background: var(--cream); }
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: start; margin-top: 56px;
+}
+.contact-map {
+  border-radius: 20px; overflow: hidden;
+  height: 320px;
+  background: linear-gradient(135deg, var(--deep), var(--deep2));
+  position: relative;
+}
+.contact-map iframe {
+  width: 100%; height: 100%; border: none; opacity: 0.9;
+}
+.contact-map .map-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 12px;
+  color: rgba(255,255,255,0.3);
+}
+.contact-map .map-placeholder i { font-size: 3rem; color: var(--saffron); opacity: 0.7; }
+.contact-map .map-placeholder p {
+  font-size: 0.85rem; color: rgba(255,255,255,0.4);
+  text-align: center; line-height: 1.5; padding: 0 20px;
+}
+.contact-details { display: flex; flex-direction: column; gap: 24px; }
+.contact-item {
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.ci-icon {
+  width: 50px; height: 50px; min-width: 50px;
+  background: linear-gradient(135deg, var(--saffron), var(--saffron-dark));
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 1.1rem;
+  box-shadow: 0 6px 20px rgba(232,101,10,0.3);
+}
+.ci-text h4 { font-size: 0.75rem; font-weight: 500; color: var(--saffron); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+.ci-text p, .ci-text a {
+  font-size: 0.95rem; color: var(--text);
+  text-decoration: none; line-height: 1.6;
+}
+.ci-text a:hover { color: var(--saffron); }
+
+/* ---- FOOTER ---- */
+footer {
+  background: var(--deep);
+  padding: 64px 5% 32px;
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px; margin-bottom: 56px;
+}
+.footer-brand .logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem; font-weight: 900;
+  color: white; margin-bottom: 16px; display: block;
+}
+.footer-brand .logo span { color: var(--saffron); }
+.footer-brand p {
+  font-size: 0.875rem; color: rgba(255,255,255,0.4);
+  line-height: 1.8; margin-bottom: 24px;
+}
+.footer-socials { display: flex; gap: 10px; }
+.footer-social {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.5); font-size: 0.95rem;
+  text-decoration: none; transition: all 0.3s;
+}
+.footer-social:hover { background: var(--saffron); color: white; border-color: var(--saffron); }
+.footer-col h4 {
+  font-size: 0.75rem; font-weight: 500; letter-spacing: 2px;
+  text-transform: uppercase; color: rgba(255,255,255,0.3);
+  margin-bottom: 20px;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.footer-col ul li a {
+  font-size: 0.875rem; color: rgba(255,255,255,0.55);
+  text-decoration: none; transition: color 0.3s;
+}
+.footer-col ul li a:hover { color: var(--saffron-light); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding-top: 28px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.3); }
+.footer-bottom a { color: var(--saffron); text-decoration: none; }
+
+/* ---- FLOATING CALL BTN ---- */
+.float-call {
+  position: fixed; bottom: 28px; right: 28px; z-index: 100;
+  width: 58px; height: 58px;
+  background: var(--saffron);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 1.3rem;
+  text-decoration: none;
+  box-shadow: 0 8px 30px rgba(232,101,10,0.5);
+  animation: floatPulse 2.5s ease-in-out infinite;
+}
+@keyframes floatPulse {
+  0%,100%{box-shadow:0 8px 30px rgba(232,101,10,0.5)}
+  50%{box-shadow:0 8px 50px rgba(232,101,10,0.8),0 0 0 12px rgba(232,101,10,0.1)}
+}
+
+/* ---- SCROLL REVEAL ---- */
+.reveal {
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .about-grid, .booking-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+  .services-grid { grid-template-columns: 1fr 1fr; }
+  .testi-grid { grid-template-columns: 1fr 1fr; }
+  .menu-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-item:nth-child(1), .gallery-item:nth-child(4) { grid-column: span 1; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .hero-stats { gap: 24px; }
+}
+@media (max-width: 640px) {
+  :root { --section-pad: 70px 0; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .services-grid { grid-template-columns: 1fr; }
+  .testi-grid { grid-template-columns: 1fr; }
+  .menu-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .hero-stats { flex-direction: column; gap: 16px; align-items: center; }
+  .hero-divider { display: none; }
+  .about-badge { width: 90px; height: 90px; bottom: -14px; right: -14px; }
+  .about-badge h3 { font-size: 1.6rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">Shreshtha<span>Caterers</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#booking" class="nav-cta">Book Now</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="toggleMenu()"><i class="fas fa-times"></i></button>
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#services" onclick="toggleMenu()">Services</a>
+  <a href="#menu" onclick="toggleMenu()">Menu</a>
+  <a href="#gallery" onclick="toggleMenu()">Gallery</a>
+  <a href="#testimonials" onclick="toggleMenu()">Reviews</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+  <a href="#booking" onclick="toggleMenu()" style="color:var(--saffron)">Book Now →</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Premium Catering in Udaipur</div>
+    <h1 class="hero-title">
+      Where Every Meal
+      <span class="accent">Tells a Story</span>
+    </h1>
+    <p class="hero-tagline">Weddings · Birthdays · Corporate · Grand Celebrations</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><h3>15+</h3><p>Years of Excellence</p></div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat"><h3>500+</h3><p>Events Catered</p></div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat"><h3>10K+</h3><p>Happy Guests</p></div>
+    </div>
+    <div class="hero-btns">
+      <a href="#booking" class="btn-primary"><i class="fas fa-calendar-check" style="margin-right:8px"></i>Book Your Event</a>
+      <a href="#services" class="btn-outline">Explore Services</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">Scroll</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img-wrap reveal">
+        <div class="about-img-frame">
+          <div class="img-placeholder">
+            <span>🍽️</span>
+            <p>Add Your Photo Here</p>
+          </div>
+        </div>
+        <div class="about-badge">
+          <h3>15+</h3>
+          <p>Years of<br/>Excellence</p>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.15s">
+        <span class="section-eyebrow">Our Story</span>
+        <h2 class="section-title">Crafting <em>Memories</em><br/>Since Day One</h2>
+        <p class="section-sub">Founded by Sudhir Menaria, Shreshtha Caterers has been Udaipur's most trusted name in premium catering for over 15 years. From intimate gatherings to grand royal weddings, we bring passion, precision, and unmatched flavour to every plate we serve.</p>
+        <div class="about-features">
+          <div class="about-feat">
+            <div class="feat-icon"><i class="fas fa-fire-alt"></i></div>
+            <div class="feat-text">
+              <h4>Live Counters & Open Kitchens</h4>
+              <p>Watch our expert chefs cook live — fresh, theatrical, and utterly delicious.</p>
+            </div>
+          </div>
+          <div class="about-feat">
+            <div class="feat-icon"><i class="fas fa-leaf"></i></div>
+            <div class="feat-text">
+              <h4>Farm-Fresh Ingredients</h4>
+              <p>We source only the freshest produce to ensure every bite is pure and premium.</p>
+            </div>
+          </div>
+          <div class="about-feat">
+            <div class="feat-icon"><i class="fas fa-crown"></i></div>
+            <div class="feat-text">
+              <h4>Royal Rajasthani Hospitality</h4>
+              <p>Rooted in the culture of Udaipur — warm, grand, and unforgettable.</p>
+            </div>
+          </div>
+        </div>
+        <a href="#booking" class="btn-primary" style="margin-top:32px;display:inline-block">Get a Free Quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-eyebrow">What We Do</span>
+      <h2 class="section-title">Services That <em>Shine</em></h2>
+      <p class="section-sub">From intimate birthday dinners to 2000-guest wedding feasts — wherever there's a big celebration, Shreshtha Caterers is there.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <span class="service-num">01</span>
+        <div class="service-icon-wrap"><i class="fas fa-rings-wedding service-icon"></i></div>
+        <h3 class="service-title">Wedding Catering</h3>
+        <p class="service-desc">Royal wedding feasts with multi-cuisine buffets, live counters, and end-to-end management from mehendi to reception.</p>
+      </div>
+      <div class="service-card reveal" style="transition-delay:0.1s">
+        <span class="service-num">02</span>
+        <div class="service-icon-wrap"><i class="fas fa-birthday-cake service-icon"></i></div>
+        <h3 class="service-title">Birthday Parties</h3>
+        <p class="service-desc">Make every birthday unforgettable with themed setups, custom cakes, snack stations, and full catering arrangements.</p>
+      </div>
+      <div class="service-card reveal" style="transition-delay:0.2s">
+        <span class="service-num">03</span>
+        <div class="service-icon-wrap"><i class="fas fa-building service-icon"></i></div>
+        <h3 class="service-title">Corporate Events</h3>
+        <p class="service-desc">Professional, punctual, and premium. Conferences, seminars, product launches, and office celebrations handled flawlessly.</p>
+      </div>
+      <div class="service-card reveal" style="transition-delay:0.1s">
+        <span class="service-num">04</span>
+        <div class="service-icon-wrap"><i class="fas fa-campground service-icon"></i></div>
+        <h3 class="service-title">Outdoor & Destination</h3>
+        <p class="service-desc">Farm houses, lakeside venues, open grounds — we set up world-class catering wherever your event takes us.</p>
+      </div>
+      <div class="service-card reveal" style="transition-delay:0.2s">
+        <span class="service-num">05</span>
+        <div class="service-icon-wrap"><i class="fas fa-users service-icon"></i></div>
+        <h3 class="service-title">Large Scale Events</h3>
+        <p class="service-desc">Feeding 500 to 5000 guests? No problem. We specialise in mega events, melas, and grand community celebrations.</p>
+      </div>
+      <div class="service-card reveal" style="transition-delay:0.3s">
+        <span class="service-num">06</span>
+        <div class="service-icon-wrap"><i class="fas fa-crown service-icon"></i></div>
+        <h3 class="service-title">VIP & Premium Setups</h3>
+        <p class="service-desc">Exclusive VIP zones, royal theme live kitchens, silver service, and luxury plated dining for discerning guests.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-eyebrow">Taste the Difference</span>
+      <h2 class="section-title" style="color:white">Our Signature <em style="color:var(--gold)">Menu</em></h2>
+      <p class="section-sub">Curated with love — from royal Rajasthani classics to continental delights.</p>
+    </div>
+    <div class="menu-tabs reveal">
+      <button class="menu-tab active" onclick="filterMenu('all')">All Items</button>
+      <button class="menu-tab" onclick="filterMenu('starter')">Starters</button>
+      <button class="menu-tab" onclick="filterMenu('main')">Main Course</button>
+      <button class="menu-tab" onclick="filterMenu('dessert')">Desserts</button>
+      <button class="menu-tab" onclick="filterMenu('live')">Live Counters</button>
+    </div>
+    <div class="menu-grid" id="menuGrid">
+      <div class="menu-item reveal" data-cat="starter"><div class="menu-emoji">🥗</div><div class="menu-info"><h4>Paneer Tikka</h4><p>Chargrilled cottage cheese with mint chutney and onion rings</p></div></div>
+      <div class="menu-item reveal" data-cat="starter"><div class="menu-emoji">🍢</div><div class="menu-info"><h4>Seekh Kebab</h4><p>Minced lamb skewers with aromatic spices, fresh off the grill</p></div></div>
+      <div class="menu-item reveal" data-cat="starter"><div class="menu-emoji">🥘</div><div class="menu-info"><h4>Dahi Ke Sholay</h4><p>Crispy fried yoghurt parcels — a Rajasthani favourite</p></div></div>
+      <div class="menu-item reveal" data-cat="main"><div class="menu-emoji">🍛</div><div class="menu-info"><h4>Dal Baati Churma</h4><p>Authentic Rajasthani specialty — the soul of Udaipur on a plate</p></div></div>
+      <div class="menu-item reveal" data-cat="main"><div class="menu-emoji">🥩</div><div class="menu-info"><h4>Laal Maas</h4><p>Fiery Rajasthani mutton curry with mathania chillies</p></div></div>
+      <div class="menu-item reveal" data-cat="main"><div class="menu-emoji">🍚</div><div class="menu-info"><h4>Vegetable Biryani</h4><p>Fragrant basmati with seasonal vegetables and saffron</p></div></div>
+      <div class="menu-item reveal" data-cat="dessert"><div class="menu-emoji">🍮</div><div class="menu-info"><h4>Malpua with Rabri</h4><p>Sweet fried pancakes soaked in syrup, served with thickened cream</p></div></div>
+      <div class="menu-item reveal" data-cat="dessert"><div class="menu-emoji">🍨</div><div class="menu-info"><h4>Kulfi Falooda</h4><p>Traditional Indian ice cream with rose syrup and vermicelli</p></div></div>
+      <div class="menu-item reveal" data-cat="live"><div class="menu-emoji">🫓</div><div class="menu-info"><h4>Live Chaat Counter</h4><p>Pani puri, bhel puri, dahi papdi — made fresh right before you</p></div></div>
+      <div class="menu-item reveal" data-cat="live"><div class="menu-emoji">🍕</div><div class="menu-info"><h4>Live Pizza Station</h4><p>Wood-fired pizzas made to order with your choice of toppings</p></div></div>
+      <div class="menu-item reveal" data-cat="live"><div class="menu-emoji">🥞</div><div class="menu-info"><h4>Live Dosa Counter</h4><p>Crispy dosas in 20+ varieties — South Indian magic at your party</p></div></div>
+      <div class="menu-item reveal" data-cat="starter"><div class="menu-emoji">🍅</div><div class="menu-info"><h4>Stuffed Mushrooms</h4><p>Button mushrooms filled with herb cream cheese, grilled to perfection</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-eyebrow">Our Work</span>
+      <h2 class="section-title">Events We've <em>Crafted</em></h2>
+      <p class="section-sub">A glimpse into the celebrations we've had the honour of being part of.</p>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item">
+        <div class="gallery-placeholder"><div class="gi">💍</div><p>Replace with wedding photo</p></div>
+        <div class="gallery-overlay"><span>Wedding Catering</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder"><div class="gi">🎂</div><p>Replace with birthday photo</p></div>
+        <div class="gallery-overlay"><span>Birthday Celebration</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder"><div class="gi">🍽️</div><p>Replace with buffet photo</p></div>
+        <div class="gallery-overlay"><span>Premium Buffet</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder"><div class="gi">🏢</div><p>Replace with corporate photo</p></div>
+        <div class="gallery-overlay"><span>Corporate Event</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder"><div class="gi">🔥</div><p>Replace with live counter photo</p></div>
+        <div class="gallery-overlay"><span>Live Counter</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder"><div class="gi">🌿</div><p>Replace with outdoor photo</p></div>
+        <div class="gallery-overlay"><span>Outdoor Setup</span></div>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:20px;font-size:0.8rem;color:var(--text-light)">
+      📸 Replace placeholder boxes with your real event photos — just swap the img src paths
+    </p>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-eyebrow">What People Say</span>
+      <h2 class="section-title">Loved by <em>Thousands</em></h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">Shreshtha Caterers made our wedding absolutely magical. The food, the presentation, the staff — everything was beyond our expectations. Sudhirji personally ensured every detail was perfect.</p>
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-author">
+          <div class="testi-avatar">RS</div>
+          <div><h5>Rohit & Sneha Sharma</h5><p>Wedding — 800 Guests, Udaipur</p></div>
+        </div>
+      </div>
+      <div class="testi-card reveal" style="transition-delay:0.1s">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">We've used them for 3 corporate events now and every time they deliver flawlessly. Professional team, on time, and the food quality is consistently outstanding. Our employees love it!</p>
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-author">
+          <div class="testi-avatar">AK</div>
+          <div><h5>Amit Kothari</h5><p>Corporate Event — 400 Guests</p></div>
+        </div>
+      </div>
+      <div class="testi-card reveal" style="transition-delay:0.2s">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">My daughter's birthday was a dream come true! The live chaat counter was a huge hit. Everyone kept asking who the caterer was. Highly recommend Shreshtha Caterers to everyone!</p>
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-author">
+          <div class="testi-avatar">PM</div>
+          <div><h5>Priya Mehta</h5><p>Birthday Party — 150 Guests</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section id="booking">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-eyebrow">Reserve Your Date</span>
+      <h2 class="section-title">Book <em style="color:var(--gold)">Shreshtha</em> Caterers</h2>
+      <p class="section-sub">Fill in your details and we'll get back to you within 24 hours with a custom quote.</p>
+    </div>
+    <div class="booking-grid">
+      <div class="booking-info reveal">
+        <h3>Get in Touch</h3>
+        <div class="booking-contact-item">
+          <div class="bci-icon"><i class="fas fa-phone-alt"></i></div>
+          <div class="bci-text"><h5>Phone / WhatsApp</h5><p>+91 XXXXX XXXXX<br/><small style="color:rgba(255,255,255,0.35)">Replace with your number</small></p></div>
+        </div>
+        <div class="booking-contact-item">
+          <div class="bci-icon"><i class="fas fa-envelope"></i></div>
+          <div class="bci-text"><h5>Email</h5><p>info@shreshthacaterers.com</p></div>
+        </div>
+        <div class="booking-contact-item">
+          <div class="bci-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="bci-text"><h5>Address</h5><p>Khuwaja Complex, Near Lok Kala Mandal,<br/>Udaipur, Rajasthan 313001</p></div>
+        </div>
+        <div class="booking-contact-item">
+          <div class="bci-icon"><i class="fas fa-clock"></i></div>
+          <div class="bci-text"><h5>Availability</h5><p>24/7 — We're always here for you</p></div>
+        </div>
+      </div>
+      <div class="booking-form-wrap reveal" style="transition-delay:0.15s">
+        <div id="booking-form-inner">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Your Name</label>
+              <input type="text" id="f-name" placeholder="Rahul Sharma" required/>
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" id="f-phone" placeholder="+91 98765 43210" required/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="f-email" placeholder="your@email.com"/>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Event Type</label>
+              <select id="f-event">
+                <option value="">Select Event</option>
+                <option>Wedding</option>
+                <option>Birthday Party</option>
+                <option>Corporate Event</option>
+                <option>Outdoor / Destination</option>
+                <option>Large Scale Event</option>
+                <option>VIP / Premium</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Number of Guests</label>
+              <select id="f-guests">
+                <option value="">Approx. count</option>
+                <option>50–100</option>
+                <option>100–300</option>
+                <option>300–500</option>
+                <option>500–1000</option>
+                <option>1000–2000</option>
+                <option>2000+</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Event Date</label>
+              <input type="date" id="f-date"/>
+            </div>
+            <div class="form-group">
+              <label>Food Preference</label>
+              <select id="f-food">
+                <option value="">Select</option>
+                <option>Pure Vegetarian</option>
+                <option>Non-Vegetarian</option>
+                <option>Jain Food</option>
+                <option>Mix (Veg + Non-Veg)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Special Requirements</label>
+            <textarea id="f-msg" placeholder="Tell us about your dream event — theme, special dishes, dietary needs..."></textarea>
+          </div>
+          <button class="form-submit" onclick="submitBooking()">
+            <i class="fas fa-paper-plane" style="margin-right:8px"></i>Send My Booking Request
+          </button>
+        </div>
+        <div id="form-success">
+          <i class="fas fa-check-circle"></i>
+          <h3>Booking Request Sent!</h3>
+          <p>Thank you! We'll call you within 24 hours to confirm your event details and provide a custom quote.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-eyebrow">The Man Behind the Magic</span>
+      <h2 class="section-title">Meet <em>Sudhir</em> Menaria</h2>
+    </div>
+    <div class="team-grid reveal">
+      <div class="team-card">
+        <div class="team-img">
+          <div class="ti-placeholder">👨‍🍳</div>
+        </div>
+        <div class="team-info">
+          <h3>Sudhir Menaria</h3>
+          <div class="role">Founder & Head Chef</div>
+          <p>With 15+ years of mastering the art of celebration dining, Sudhir built Shreshtha Caterers from the ground up. His personal involvement in every event ensures that your celebration is nothing short of extraordinary.</p>
+          <div class="team-socials">
+            <a href="#" class="team-social"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="team-social"><i class="fab fa-facebook-f"></i></a>
+            <a href="tel:+91XXXXXXXXXX" class="team-social"><i class="fas fa-phone"></i></a>
+            <a href="https://wa.me/91XXXXXXXXXX" class="team-social"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-eyebrow">Find Us</span>
+      <h2 class="section-title">Visit or <em>Call Us</em></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-map reveal">
+        <!-- Replace this with a real Google Maps embed:
+             Go to maps.google.com → search your address → Share → Embed a map → Copy iframe -->
+        <div class="map-placeholder">
+          <i class="fas fa-map-marked-alt"></i>
+          <p>Replace this box with a Google Maps embed iframe of your Udaipur address</p>
+        </div>
+      </div>
+      <div class="contact-details reveal" style="transition-delay:0.15s">
+        <div class="contact-item">
+          <div class="ci-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="ci-text">
+            <h4>Our Address</h4>
+            <p>Khuwaja Complex, Near Lok Kala Mandal,<br/>Opp. Mota Park, Udaipur, Rajasthan 313001</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon"><i class="fas fa-phone-alt"></i></div>
+          <div class="ci-text">
+            <h4>Call / WhatsApp</h4>
+            <a href="tel:+91XXXXXXXXXX">+91 XXXXX XXXXX</a><br/>
+            <small style="color:var(--text-light)">Available 24/7</small>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon"><i class="fas fa-envelope"></i></div>
+          <div class="ci-text">
+            <h4>Email Us</h4>
+            <a href="mailto:info@shreshthacaterers.com">info@shreshthacaterers.com</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon"><i class="fab fa-instagram"></i></div>
+          <div class="ci-text">
+            <h4>Follow on Instagram</h4>
+            <a href="#">@shreshthacaterers</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo">Shreshtha<span>Caterers</span></span>
+        <p>Udaipur's most trusted premium catering service. Bringing joy, flavour, and elegance to every celebration for over 15 years.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-social"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="footer-social"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="footer-social"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="footer-social"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#menu">Our Menu</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#booking">Book Now</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Wedding Catering</a></li>
+          <li><a href="#services">Birthday Parties</a></li>
+          <li><a href="#services">Corporate Events</a></li>
+          <li><a href="#services">Outdoor Events</a></li>
+          <li><a href="#services">VIP Setups</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+91XXXXXXXXXX">+91 XXXXX XXXXX</a></li>
+          <li><a href="mailto:info@shreshthacaterers.com">info@shreshthacaterers.com</a></li>
+          <li><a href="#contact">Udaipur, Rajasthan</a></li>
+          <li><a href="#booking">24/7 Availability</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <a href="#">Shreshtha Caterers</a>. All rights reserved. Made with ❤️ in Udaipur.</p>
+      <p>Designed by <a href="#">Sudhir Menaria</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING CALL BUTTON -->
+<a href="tel:+91XXXXXXXXXX" class="float-call" title="Call Now">
+  <i class="fas fa-phone-alt"></i>
+</a>
+
+<script>
+// ---- THREE.JS HERO BACKGROUND ----
+(function(){
+  const canvas = document.getElementById('hero-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 5;
+
+  // Floating geometric food-inspired shapes
+  const geometries = [
+    new THREE.OctahedronGeometry(0.3, 0),
+    new THREE.TetrahedronGeometry(0.35, 0),
+    new THREE.IcosahedronGeometry(0.25, 0),
+    new THREE.DodecahedronGeometry(0.28, 0),
+    new THREE.BoxGeometry(0.35, 0.35, 0.35),
+  ];
+
+  const colors = [0xE8650A, 0xFF8C42, 0xD4A943, 0xF0C96A, 0xB84E06, 0xE8650A];
+  const meshes = [];
+
+  for (let i = 0; i < 28; i++) {
+    const geo = geometries[i % geometries.length];
+    const mat = new THREE.MeshPhongMaterial({
+      color: colors[i % colors.length],
+      transparent: true,
+      opacity: 0.12 + Math.random() * 0.2,
+      wireframe: Math.random() > 0.5,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(
+      (Math.random() - 0.5) * 14,
+      (Math.random() - 0.5) * 10,
+      (Math.random() - 0.5) * 6
+    );
+    mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+    mesh.userData = {
+      speedX: (Math.random() - 0.5) * 0.004,
+      speedY: (Math.random() - 0.5) * 0.003,
+      speedZ: (Math.random() - 0.5) * 0.002,
+      floatY: Math.random() * Math.PI * 2,
+      floatSpeed: 0.003 + Math.random() * 0.005,
+    };
+    scene.add(mesh);
+    meshes.push(mesh);
+  }
+
+  // Particle system
+  const partGeo = new THREE.BufferGeometry();
+  const partCount = 120;
+  const positions = new Float32Array(partCount * 3);
+  for (let i = 0; i < partCount; i++) {
+    positions[i * 3] = (Math.random() - 0.5) * 20;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 14;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
+  }
+  partGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const partMat = new THREE.PointsMaterial({ color: 0xD4A943, size: 0.06, transparent: true, opacity: 0.5 });
+  scene.add(new THREE.Points(partGeo, partMat));
+
+  // Lighting
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  const dLight = new THREE.DirectionalLight(0xE8650A, 1.2);
+  dLight.position.set(3, 5, 3);
+  scene.add(dLight);
+  const pLight = new THREE.PointLight(0xD4A943, 1.5, 20);
+  pLight.position.set(-4, 2, 2);
+  scene.add(pLight);
+
+  let mouseX = 0, mouseY = 0;
+  document.addEventListener('mousemove', e => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 0.5;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 0.5;
+  });
+
+  window.addEventListener('resize', () => {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+  });
+
+  let t = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    t += 0.01;
+    meshes.forEach(m => {
+      m.rotation.x += m.userData.speedX;
+      m.rotation.y += m.userData.speedY;
+      m.rotation.z += m.userData.speedZ;
+      m.userData.floatY += m.userData.floatSpeed;
+      m.position.y += Math.sin(m.userData.floatY) * 0.002;
+    });
+    camera.position.x += (mouseX - camera.position.x) * 0.03;
+    camera.position.y += (-mouseY - camera.position.y) * 0.03;
+    camera.lookAt(scene.position);
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+
+// ---- NAV SCROLL ----
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ---- MOBILE MENU ----
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+// ---- MENU FILTER ----
+function filterMenu(cat) {
+  document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.menu-item').forEach(item => {
+    const show = cat === 'all' || item.dataset.cat === cat;
+    item.style.display = show ? 'flex' : 'none';
+  });
+}
+
+// ---- BOOKING FORM ----
+function submitBooking() {
+  const name = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  if (!name || !phone) {
+    alert('Please enter your name and phone number.');
+    return;
+  }
+  document.getElementById('booking-form-inner').style.display = 'none';
+  document.getElementById('form-success').style.display = 'block';
+}
+
+// ---- SCROLL REVEAL ----
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
